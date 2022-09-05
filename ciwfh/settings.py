@@ -36,8 +36,24 @@ SECRET_KEY = SECRETS['secret_key']
 DEBUG = SECRETS['debug']
 
 ALLOWED_HOSTS = SECRETS['allowed_hosts']
-
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4173",
+    "http://localhost:8000",
+    "http://127.0.0.1:4173",
+    "http://127.0.0.1:8000",
+]
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:4173",
+    "http://localhost:8000",
+    "http://127.0.0.1:4173",
+    "http://127.0.0.1:8000",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:4173",
+    "http://localhost:8000",
+    "http://127.0.0.1:4173",
+    "http://127.0.0.1:8000",
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,9 +63,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'rest_framework',
     'restapi',
-
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -60,8 +77,24 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
-
+CORS_ALLOW_HEADERS = (
+    'content-disposition', 
+    'accept-encoding',
+    'content-type', 
+    'accept', 
+    'origin', 
+    'authorization',
+    'Access-Control-Allow-Origin', 
+    'Access-Control-Allow-Headers', 
+    'Access-Control-Allow-Methods', 
+    'Origin', 
+    'X-Requested-With',
+    'Content-Type', 
+    'Accept'
+)
 ROOT_URLCONF = 'ciwfh.urls'
 
 TEMPLATES = [
@@ -129,8 +162,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT  = 'static'
+MEDIA_URL = 'media/'
+MEDIA_ROOT = 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
